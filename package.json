@@ -1,0 +1,17 @@
+{
+	"name":"grade-report",
+	"description":"Online grading utility for Java projects",
+	"version":"0.0.1",
+	"engines":{
+		"node":"0.8.x",
+		"npm":"1.1.x"	
+	},
+	"dependencies":{
+		"express":"3.x",
+		"jade":"x.x",
+		"redis":"x.x"
+	},
+	"scripts":{
+		"start":"node server.js"	
+	}
+}
