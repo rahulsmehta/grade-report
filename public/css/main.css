@@ -1,0 +1,35 @@
+/tab-container{
+	margin-left: 2%;
+	text-align:left;
+}
+
+#container{
+	position:relative;
+	height:200px;
+}
+
+.translucent {
+	opacity:.15;
+	filter: alpha(opacity = 15); /*IE Support*/
+}
+
+#background, #hero-container{
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+#background{
+	background-image:url('../img/logo.png');
+	background-repeat: no-repeat;
+	background-position: center top;
+	width:100%;
+	-moz-background-size: 200px 200px;
+	background-size: 220px 220px;
+	height:275px;
+}
+
+#hero-container{
+	text-align:center;
+	position:relative;
+}
