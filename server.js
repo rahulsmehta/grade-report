@@ -1,11 +1,13 @@
 var express = require('express'),
-    app = express();
+    app = express(),
+    jade = require('jade');
 
 var http = require('http'),
     port = null;
 
 app.configure(function(){
     app.use(express.static(__dirname + '/public'));
+    app.use(express.bodyParser());
 });
 
 app.configure('production', function(){

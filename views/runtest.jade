@@ -1,0 +1,14 @@
+html 
+  head 
+    title Unit Test-O-Matic 5000
+    link(rel="stylesheet",href="css/bootstrap.css")
+
+  body
+    h3 so you think you can upload files...
+    p your file was called #{fn}
+    p your username is #{uid}
+    <form action="/run" method="post" enctype="multipart/form-data">
+    <p>filename: <input type="text" name="fn" /><p/>
+    <p>username: <input type="text" name="uid" /><p/>
+    <p><input type="submit" text="Upload" /><p/>
+    <form/>

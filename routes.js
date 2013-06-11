@@ -1,13 +1,14 @@
+// Include jade and child_process for executing java tests
 var redis = null,
     client = null,
-    jade = require('jade');
-    exec = require('child_process').exec;
+    jade = require('jade'),
+    exec = require('child_process').exec,
+    ROOT = __dirname;
 
 if(process.env.REDISTOGO_URL){
     var rtg = require('url').parse(process.env.REDISTOGO_URL);
     var redis = require('redis'),
         client = redis.createClient(rtg.port,rtg.hostname);
-
     client.auth(rtg.auth.split(':')[1]); //Authenticate
 } else {
     redis = require('redis');
@@ -31,31 +32,26 @@ if(process.env.REDISTOGO_URL){
 
 var display = function(req,res){
   console.log(req.method + " " + req.url+" "+new Date());
-  res.send('200 - Success');
+  res.render('index.jade');
 }
 
-var upload = function(req,res){
-  console.log(req.method + " " + req.url+" "+new Date());
-}
 
-var run = function(req,res){
-  var proc = exec('java test');
-      restext = '';
+var _run = require('./handlers/run');
+    _run.setDir(ROOT),
+    _run.setExec(exec);
+    var run = _run.runFile;
 
-  proc.stdout.setEncoding('utf-8');
-  proc.stdout.on('data',function(_data){
-    restext+=_data;
-  });
-  proc.on('exit',function(){
-    res.send(restext || 'File did not execute.');
-  }); 
-}
+var _upload = require('./handlers/upload'); //Require upload module
+    _upload.setClient(client); //Pass redis client to upload module
+    _upload.setDir(ROOT); //Set root dir for uploader
+    var upload = _upload.upload;  //Grab the actual upload route
+
 
 //var sendData = function(req,res){
 //    console.log(req.method + " " + req.url+" "+new Date());
 //    req.setEncoding('utf8');
 //    var _id = req.params.id,
-//        _text = null;
+//        _text = null
 //    client.get(_id,function(err,reply){
 //        if(reply){
 //            _text = jade.compile(reply)();
@@ -67,7 +63,9 @@ var run = function(req,res){
 //};
 
 exports.addRoutes = function(app){
-      app.get('/',display);
-      app.get('/run',run);
-      app.post('/upload',upload);
+  app.get('/',function(req,res){
+    res.render('index.jade');
+  });
+  app.post('/run',run);
+  app.post('/upload',upload); //TODO: Upload with tarballs
 };
