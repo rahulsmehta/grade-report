@@ -17,12 +17,13 @@ var upload = function(req,res){
   }
 
   console.log(JSON.stringify(req.files.file)); //TODO: Change hash to directory name and keep org file name
-  var fn = hash(req.body.uid+req.files.file.name);
-  var pathname = dir+"/uploads/"+fn+'.java';
+//  var fn = hash(req.body.uid+req.files.file.name);
+  var fn = req.files.file.name;
+  var pathname = dir+"/uploads/"+fn;
   fs.readFile(req.files.file.path,function(err,_data){
     fs.open(pathname,'w+',function(err,fd){
       fs.write(fd,_data,0,_data.length,null,function(err){
-        res.render('runtest.jade',{fn:fn+'.java',uid:req.body.uid});
+        res.render('runtest.jade',{fn:fn,uid:req.body.uid});
       });
     });
   });
